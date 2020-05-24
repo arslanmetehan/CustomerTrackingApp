@@ -62,6 +62,22 @@ namespace CustomerTrackingApp.Persistence.Dapper
 				command = new SQLiteCommand(sql, conn);
 				command.ExecuteNonQuery();
 			}
+			sql = "SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name = 'Log'";
+			command = new SQLiteCommand(sql, conn);
+			count = Convert.ToInt32(command.ExecuteScalar());
+			if (count == 0)
+			{
+				sql = "create table Log (" +
+							"Id INTEGER PRIMARY KEY, " +
+							"Type INTEGER NOT NULL, " +
+							"Message TEXT, " +
+							"Timestamp INTEGER" +
+						")";
+
+				command = new SQLiteCommand(sql, conn);
+				command.ExecuteNonQuery();
+			}
 		}
+
 	}
 }

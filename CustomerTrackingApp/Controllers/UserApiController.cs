@@ -61,6 +61,15 @@ namespace CustomerTrackingApp.Controllers
 		{
 			try
 			{
+				var onlineUser = this._userService.GetOnlineUser(this.HttpContext);
+				if (onlineUser == null)
+				{
+					return Json(ApiResponse<List<UserModel>>.WithError("Not authorized !"));
+				}
+				if(onlineUser.Type != 0 && model.Type == Enum.Type.Admin || onlineUser.Type != 0 && model.Type == Enum.Type.Manager || onlineUser.Type == Enum.Type.Employee)
+				{
+					return Json(ApiResponse<List<UserModel>>.WithError("Not authorized !"));
+				}
 				if (model.Username == null || model.Username == "")
 				{
 					return Json(ApiResponse<UserModel>.WithError("Username is required !"));

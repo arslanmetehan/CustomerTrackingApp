@@ -15,8 +15,8 @@ namespace CustomerTrackingApp.Persistence.Dapper
         {
             using (IDbConnection dbConnection = this.OpenConnection())
             {
-                dbConnection.Execute("INSERT INTO User (Username, Password, Email, BirthYear, Gender, Type, Phone, IsActive, ManagerId) " +
-                    "VALUES(@Username, @Password, @Email, @BirthYear, @Gender, @Type, @Phone, @IsActive, @ManagerId)", user);
+                dbConnection.Execute("INSERT INTO User (Username, FullName, Password, Email, BirthYear, Gender, Type, Phone, IsActive, ManagerId) " +
+                    "VALUES(@Username, @FullName, @Password, @Email, @BirthYear, @Gender, @Type, @Phone, @IsActive, @ManagerId)", user);
                 user.Id = dbConnection.ExecuteScalar<int>("SELECT last_insert_rowid()");
             }
         }

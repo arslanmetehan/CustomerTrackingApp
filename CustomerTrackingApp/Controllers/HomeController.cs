@@ -23,7 +23,14 @@ namespace CustomerTrackingApp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var user = this.services.UserService.GetOnlineUser(this.HttpContext);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var model = this.services.ViewService.CreateViewModel<BaseViewModel>(this.HttpContext, nameof(this.Index));
+            return View(model);
+     
         }
         public IActionResult Error()
         {
@@ -42,7 +49,13 @@ namespace CustomerTrackingApp.Controllers
         }
         public IActionResult Users()
         {
-            return View();
+            var user = this.services.UserService.GetOnlineUser(this.HttpContext);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var model = this.services.ViewService.CreateViewModel<BaseViewModel>(this.HttpContext, nameof(this.Users));
+            return View(model);
         }
     }
 }

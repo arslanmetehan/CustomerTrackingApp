@@ -15,21 +15,24 @@
     </script>
 </head>
 <body onload="main()">
-    <div class="header clearfix">
-        <div class="navbar-box">
-            <ul class="navbar">
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Users">Users</a>
-                </li>
-            </ul>
+    @if (Model.OnlineUser != null)
+    {
+        <div class="header clearfix">
+            <div class="navbar-box">
+                <ul class="navbar">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Users">Users</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
+    }
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

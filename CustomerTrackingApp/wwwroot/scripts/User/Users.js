@@ -3,8 +3,18 @@
 	userCreateBtn.onclick = tryInsertUser;
 
 	tryGetUsers();
+	tryGetOnlineUser();
 }
-
+function tryGetOnlineUser() {
+	httpRequest("api/User/GetOnlineUser", "GET", null, handleGetOnlineUser, showError.bind(null, "System Error"));
+}
+function handleGetOnlineUser(response) {
+	if (!response.Success) {
+		showError(response.ErrorMessage);
+		return;
+	}
+	page.onlineUser = response.Data;
+}
 function tryGetUsers() {
 	httpRequest("api/User/GetActiveUsers", "GET", null, handleGetUsers, showError.bind(null, "System Error"));
 }
@@ -29,49 +39,83 @@ function openUserModal() {
 function selectUser() {
 
 	let userSelect = document.getElementById("select-user-type");
-	var opt = userSelect.options[userSelect.selectedIndex];
+	if (page.onlineUser.Type != 0) {
+		userSelect.removeChild(userSelect.options[0]);
+		userSelect.removeChild(userSelect.options[0]);
+    }
+	var userOpt = userSelect.options[userSelect.selectedIndex];
 
 	let managerSelectDiv = document.getElementById("manager");
 	let managerSelect = document.getElementById("select-manager");
 	let userTypeTitle = document.getElementById("user-type-title");
-	for (i = 0; i < page.managers.length; i++) {
-		let manager = page.managers[i];
-		var opt = document.createElement('option');
-		opt.appendChild(document.createTextNode(manager.Username));
-		opt.value = manager.Id;
-		managerSelect.appendChild(opt); 
-    }
-	if (opt.value == 0) {
+
+	if (page.onlineUser.Type == 1) {	
+		var opt = document.createElement("option");
+		opt.appendChild(document.createTextNode(page.onlineUser.Username));
+		opt.value = page.onlineUser.Id;
+		managerSelect.appendChild(opt);
+	}
+	else {
 		
+		managerSelect.querySelectorAll('*').forEach(n => n.remove());
+		for (i = 0; i < page.managers.length; i++) {
+			let manager = page.managers[i];
+			var managerOpt = document.createElement("option");
+			managerOpt.appendChild(document.createTextNode(manager.Username));
+			managerOpt.value = manager.Id;
+			managerSelect.appendChild(managerOpt);
+		}
+    }
+
+	if (userOpt.value == 0) {
+
 		managerSelectDiv.style.display = "none";
 		managerSelect.style.display = "none";
 		userTypeTitle.innerHTML = "Creating an Administrator";
 	}
-	else if (opt.value == 1)
-	{
+	else if (userOpt.value == 1) {
 		managerSelectDiv.style.display = "none";
 		managerSelect.style.display = "none";
 		userTypeTitle.innerHTML = "Creating a Manager";
-    }
-	else
-	{
+	}
+	else {
 		managerSelectDiv.style.display = "block";
 		managerSelect.style.display = "block";
 		userTypeTitle.innerHTML = "Creating an Employee";
 	}
 	document.getElementById("chose-type-btn").addEventListener('click', selectUser);
+	
+
+
 }
 function handleGetUsers(response) {
 	if (!response.Success) {
 		showError(response.ErrorMessage);
 		return;
 	}
+	page.managers = [];
 	page.users = response.Data;
 	for (i = 0; i < page.users.length; i++) {
 		let user = page.users[i];
 		if (user.Type == 1) {
 			page.managers.push(user);
-        }
+		}
+		if (user.Type == 0) {
+			user.Type = "Admin";
+		}
+		else if (user.Type == 1) {
+			user.Type = "Manager";
+		}
+		else {
+			user.Type = "Employee";
+		}
+		if (user.Gender == 0) {
+			user.Gender = "Female";
+		}
+		else {
+			user.Gender = "Male";
+		}
+		appendUser(user);
 	}
 	let userModelBtn = document.getElementById("user-modal-btn");
 	userModelBtn.onclick = openUserModal;
@@ -82,10 +126,9 @@ function tryInsertUser() {
 	var userTypeValue = userType.value;
 
 	var manager = document.getElementById("select-manager");
-	managerId = manager.options[manager.selectedIndex];
+	var managerId = manager.options[manager.selectedIndex];
 	var managerIdValue = managerId.value;
-	if (userTypeValue == 0 || userTypeValue == 1)
-	{
+	if (userTypeValue == 0 || userTypeValue == 1) {
 		managerIdValue = 0;
 	}
 	var gender = document.getElementById("select-gender");
@@ -99,23 +142,34 @@ function tryInsertUser() {
 	let birthyear = document.getElementById("user-create-birthyear").value;
 	let phone = document.getElementById("user-create-phone").value;
 
+	if (username == "" ||
+		fullname == "" ||
+		email == "" ||
+		password == "" ||
+		birthyear == "" ||
+		phone == "") {
+		let message = "Mandatory fields must be filled";
+		return showError(message);
 
+    }
 	let data = {
 		Username: username,
-		Fullname: fullname,
+		FullName: fullname,
 		Email: email,
 		Password: password,
-		Gender: genderValue,
-		BirthYear: parseInt(birthYear),
+		Gender: parseInt(genderValue),
+		BirthYear: parseInt(birthyear),
 		Phone: parseInt(phone),
-		Manager: managerIdValue,
-		Type: userTypeValue,
+		ManagerId: parseInt(managerIdValue),
+		Type: parseInt(userTypeValue),
 
 	};
 
 	httpRequest("api/User/CreateUser", "POST", data, handleInsertUser, showError.bind(null, "System Error"));
 }
-
+function redirectToUsers() {
+	redirect("Home/Users");
+}
 function handleInsertUser(response) {
 	if (!response.Success) {
 		showError(response.ErrorMessage);
@@ -123,28 +177,29 @@ function handleInsertUser(response) {
 	}
 
 	let user = response.Data;
+
 	appendUser(user);
+	redirectToUsers();
 }
 
 function appendUser(user) {
-	let userTemplate = '<div id="user-id-##user.Id##">';
-	userTemplate += '<div>##user.Username##';
-	userTemplate += '<div>##user.Fullname##';
-	userTemplate += '<div>##user.Email##';
-	userTemplate += '<div>##user.Gender##';
-	userTemplate += '<div>##user.Phone##';
-	userTemplate += '<div>##user.Manager##';
-	userTemplate += '<div>##user.Type##';
-	userTemplate += '<div>##user.BirthYear##';
+	let userTemplate = '<div class="clearfix" id="user-id-##user.Id##">';
+	userTemplate += '<div class="user-info">##user.Username##</div>';
+	userTemplate += '<div class="user-info">##user.FullName##</div>';
+	userTemplate += '<div class="user-info">##user.Email##</div>';
+	userTemplate += '<div class="user-info">##user.Gender##</div>';
+	userTemplate += '<div class="user-info">##user.Phone##</div>';
+	userTemplate += '<div class="user-info">##user.Type##</div>';
+	userTemplate += '<div class="user-info">##user.BirthYear##</div>';
 	userTemplate += '</div>';
 
 	let userHtmlString = userTemplate
 		.split("##user.Id##").join(user.Id)//.replace("##user.Id##", userModel.Id)
 		.split("##user.Username##").join(user.Username)//.replace("##user.Username##", userModel.Username)
-		.split("##user.Fullname##").join(user.Fullname)//.replace("##user.Username##", userModel.Username)
+		.split("##user.FullName##").join(user.FullName)//.replace("##user.Username##", userModel.Username)
 		.split("##user.Email##").join(user.Email)//.replace("##user.Email##", userModel.Email)
+		.split("##user.Gender##").join(user.Gender)//.replace("##user.Email##", userModel.Email)
 		.split("##user.Phone##").join(user.Phone)//.replace("##user.Email##", userModel.Email)
-		.split("##user.Manager##").join(user.Manager)//.replace("##user.Email##", userModel.Email)
 		.split("##user.Type##").join(user.Type)//.replace("##user.Email##", userModel.Email)
 		.split("##user.BirthYear##").join(user.BirthYear)//.replace("##user.Email##", userModel.Email)
 

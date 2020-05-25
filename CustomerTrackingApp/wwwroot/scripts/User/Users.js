@@ -181,10 +181,10 @@ function handleInsertUser(response) {
 	appendUser(user);
 	redirectToUsers();
 }
-
 function appendUser(user) {
-	let userTemplate = '<div class="clearfix" id="user-id-##user.Id##">';
-	userTemplate += '<div class="user-info">##user.Username##</div>';
+	let userProfileLink = generateHref("User/Profile/##user.Id##");
+	let userTemplate = '<div class="clearfix user-line-box" id="user-id-##user.Id##">';
+	userTemplate += '<a class="user-info profile-btn" href="'+ userProfileLink +'">##user.Username##</a>';
 	userTemplate += '<div class="user-info">##user.FullName##</div>';
 	userTemplate += '<div class="user-info">##user.Email##</div>';
 	userTemplate += '<div class="user-info">##user.Gender##</div>';

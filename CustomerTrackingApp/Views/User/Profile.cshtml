@@ -1,0 +1,36 @@
+﻿@model UserViewModel
+<script type="text/javascript" src="~/scripts/User/Profile.js"></script>
+<link rel="stylesheet" href="~/styles/main.css" />
+<link rel="stylesheet" href="~/styles/profile.css" />
+<div class="page-container clearfix">
+    <div class="profile-header">
+        <div class="username">@Model.Username</div>
+        <div class="fullname">@Model.FullName</div>
+        <div class="user-type">@Model.Type</div>
+        <input type="hidden" value="@Model.Id" />
+    </div>
+    <div class="user-info-content">
+        <h2>Personal Information</h2>
+        <ul class="info-list">
+            <li class="info-item">
+                <h6>Date of Birth</h6>
+                <span>@Model.BirthYear</span>
+            </li>
+            <li class="info-item">
+                <h6>Gender</h6>
+                <span>@Model.Gender</span>
+            </li>
+            <li class="info-item">
+                <h6>Phone</h6>
+                <span>@Model.Phone</span>
+            </li>
+            <li class="info-item">
+                <h6>Email</h6>
+                <span>@Model.Email</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<div id="error" style="margin-bottom:60px;display:none;"></div>

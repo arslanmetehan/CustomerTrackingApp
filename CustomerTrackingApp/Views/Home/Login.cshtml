@@ -1,13 +1,19 @@
 ﻿@model BaseViewModel
 <script type="text/javascript" src="~/scripts/Home/Login.js"></script>
-<div id="user-login-form">
-    <h1>User Login</h1>
-    <div style="margin-bottom:60px;">
-        <div>Username:</div>
-        <div><input type="text" id="user-login-username" /></div>
-        <div>Password:</div>
-        <div><input type="password" id="user-login-password" /></div>
-        <div><button id="user-login-btn">Login!</button></div>
+<link rel="stylesheet" href="~/styles/login.css" />
+<link rel="stylesheet" href="~/styles/details.css" />
+<div class="page-container">
+    <div class="user-login-form-out">
+        <div class="user-login-form" id="user-login-form">
+            <h1>Login</h1>
+            <div style="margin-bottom:60px;">
+                <div class="login-col">Username:</div>
+                <div><input class="login-input" type="text" id="user-login-username" /></div>
+                <div class="login-col">Password:</div>
+                <div><input class="login-input" type="password" id="user-login-password" /></div>
+                <div><button class="btn btn-down-left" id="user-login-btn">Login!</button></div>
+            </div>
+        </div>
     </div>
 </div>
 <div id="error" style="margin-bottom:60px;display:none;"></div>

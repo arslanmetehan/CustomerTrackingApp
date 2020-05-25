@@ -1,10 +1,16 @@
 ﻿@model BaseViewModel
 <script type="text/javascript" src="~/scripts/User/Users.js"></script>
 <link rel="stylesheet" href="~/styles/users.css" />
+<div class="header">header</div>
 <div class="page-container clearfix">
+    <div class="side-bar">
+        MENU
+    </div>
     <div class="clearfix" id="user-create-form">
-        <h1 class="user-title">Create a User</h1>
-        <button class="user-modal-btn" id="user-modal-btn">+ Add User</button>
+        <div class="user-list-top">
+            <h1 class="user-title">Create a User</h1>
+            <button class="user-modal-btn" id="user-modal-btn">+ Add User</button>
+        </div>
         <div id="user-modal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -46,17 +52,17 @@
                 </div>
                 <div><button id="user-create-btn">Add User!</button></div>
             </div>
-        </div>  
-    </div>
-    <div class="user-list clearfix" id="user-list">
-        <div class="user-info-titles clearfix">
-            <div>Username</div>
-            <div>FullName</div>
-            <div>Email</div>
-            <div>Gender</div>
-            <div>Phone</div>
-            <div>Type</div>
-            <div>Birth Year</div>
+        </div>
+        <div class="user-list clearfix" id="user-list">
+            <div class="user-info-titles clearfix">
+                <div>Username</div>
+                <div>FullName</div>
+                <div>Email</div>
+                <div>Gender</div>
+                <div>Phone</div>
+                <div>Type</div>
+                <div>Birth Year</div>
+            </div>
         </div>
     </div>
 </div>

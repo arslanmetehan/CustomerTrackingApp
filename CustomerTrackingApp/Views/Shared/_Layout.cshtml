@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CustomerTracking</title>
-    <link rel="stylesheet" href="~/styles/home.css" />
+    <link rel="stylesheet" href="~/styles/main.css" />
     <script type="text/javascript" src="~/scripts/http.js"></script>
     <script type="text/javascript" src="~/scripts/parser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
@@ -15,24 +15,6 @@
     </script>
 </head>
 <body onload="main()">
-    @if (Model.OnlineUser != null)
-    {
-        <div class="header clearfix">
-            <div class="navbar-box">
-                <ul class="navbar">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Users">Users</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    }
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

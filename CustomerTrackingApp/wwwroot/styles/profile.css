@@ -1,0 +1,26 @@
+﻿.page-container
+{
+    width:1200px;
+    margin-left:auto;
+    margin-right:auto;
+}
+.profile-header
+{
+    padding:20px;
+}
+.username
+{
+    font-size:17px;
+    color:#ff6a00;
+    margin-bottom:20px;
+
+}
+.fullname {
+    font-size: 15px;
+    margin-bottom:8px;
+}
+.user-type {
+    font-size: 14px;
+    font-style:italic;
+}
+

@@ -1,0 +1,35 @@
+﻿.page-container
+{
+    position:relative;
+}
+.user-login-form-out {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width:250px;
+    height:300px;
+    transform: translate(-50%, 50%);
+  
+}
+.user-login-form {
+    position: absolute;
+
+}
+.user-login-form h1 
+{
+    color:#ff6a00;
+}
+.login-input
+{
+    border:0px;
+    outline:0px;
+    height:25px;
+    box-shadow:0px 0px 1px;
+    border-radius:5px;
+    margin-bottom:13px;
+    padding-left:5px;
+}
+.login-col
+{
+    margin-bottom:8px;
+}

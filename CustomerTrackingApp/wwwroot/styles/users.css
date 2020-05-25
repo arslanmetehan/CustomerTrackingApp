@@ -2,6 +2,20 @@
 {
     font-family:roboto;
 }
+.header
+{
+    min-height:60px;
+    padding:20px;
+}
+.side-bar
+{
+    float:left;
+    min-width:200px;
+    padding:20px;
+    margin-right:20px;
+    height:500px;
+    border:1px solid black;
+}
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -38,17 +52,24 @@
 }
 .page-container
 {
-    width:1500px;
-    margin-left:auto;
-    margin-right:auto;
+
 }
 .container {
     
    
 }
+.user-list-top
+{
+    position:relative;
+}
+.user-list-top h1
+{
+    padding-left:50px;
+}
 #user-create-form
 {
     position:relative;
+    float:left;
 }
 .user-info {
     float: left;
@@ -56,6 +77,10 @@
     min-width: 150px;
     font-size:14px;
     text-align:center;
+}
+.user-info.profile-btn
+{
+    display:block;
 }
 .user-info-titles div {
     float: left;
@@ -71,7 +96,7 @@
 .user-modal-btn {
     display: block;
     position: absolute;
-    right: 19%;
+    right: 5%;
     top: 5%;
     background: #aaaaaa;
     color: #ff6a00;
@@ -95,4 +120,8 @@
     border:1px solid white;
     box-shadow:0px 0px 4px;
 
+}
+.user-list a
+{
+    color:#0b54d8;
 }

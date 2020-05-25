@@ -1,2 +1,18 @@
 ﻿@model BaseViewModel
-    <script type="text/javascript" src="~/scripts/Home/Index.js"></script>
+<script type="text/javascript" src="~/scripts/Home/Index.js"></script>
+<link rel="stylesheet" href="~/styles/home.css" />
+<div class="header clearfix">
+    <div class="navbar-box">
+        <ul class="navbar">
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Users">Users</a>
+            </li>
+        </ul>
+    </div>
+</div>

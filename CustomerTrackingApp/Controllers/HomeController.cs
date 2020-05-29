@@ -57,5 +57,15 @@ namespace CustomerTrackingApp.Controllers
             var model = this.services.ViewService.CreateViewModel<BaseViewModel>(this.HttpContext, nameof(this.Users));
             return View(model);
         }
+        public IActionResult Customers()
+        {
+            var user = this.services.UserService.GetOnlineUser(this.HttpContext);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var model = this.services.ViewService.CreateViewModel<BaseViewModel>(this.HttpContext, nameof(this.Customers));
+            return View(model);
+        }
     }
 }

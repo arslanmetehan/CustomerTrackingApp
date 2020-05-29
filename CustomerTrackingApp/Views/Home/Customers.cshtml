@@ -1,0 +1,40 @@
+﻿@model BaseViewModel
+<script type="text/javascript" src="~/scripts/User/Customers.js"></script>
+<link rel="stylesheet" href="~/styles/users.css" />
+<link rel="stylesheet" href="~/styles/details.css" />
+<div class="header">header</div>
+<div class="page-container clearfix">
+    <div class="side-bar" id="side-bar">
+        <ul>
+            <li>
+                <a class="menu-item" id="home-btn">Home</a>
+            </li>
+        </ul>
+    </div>
+    <div class="clearfix" id="user-create-form">
+        <div class="user-list-top">
+            <h1 class="user-title">Create a Customer</h1>
+            <button class="user-modal-btn" id="user-modal-btn">+ Add Customer</button>
+        </div>
+        <div id="user-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Create Customer</h2>
+                <div class="info-title">Fullname:</div>
+                <div><input class="info-input" type="text" id="user-create-fullname" /></div>
+                <div class="info-title">Phone:</div>
+                <div><input class="info-input" type="text" id="user-create-phone" /></div>
+                <div><button class="btn btn-down-left" id="customer-create-btn">Add Customer !</button></div>
+            </div>
+        </div>
+        <div class="user-list clearfix" id="user-list">
+            <div class="user-info-titles clearfix">
+                <div>FullName</div>
+                <div>Phone</div>
+            </div>
+            <div class="users clearfix" id="customers"></div>
+        </div>
+    </div>
+    <div class="pagination-box" id="pagination-box"></div>
+</div>
+<div id="error" style="margin-bottom:60px;display:none;"></div>

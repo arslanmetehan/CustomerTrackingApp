@@ -4,6 +4,21 @@
 
 	tryGetUsers();
 	tryGetOnlineUser();
+	createMenu();
+}
+function redirectTo(url) {
+	redirect(""+url+"");
+}
+function createMenu() {
+	/*let menu = document.getElementById("side-bar");
+	let home = document.createElement("button");
+	home.class = "menu-item";
+	home.innerHTML = "Home";
+	menu.appendChild(home);
+	home.onclick = redirectTo.bind(null, "Home/Index");*/
+	let home = document.getElementById("home-btn");
+	home.setAttribute("href", "Index");
+	
 }
 function tryGetOnlineUser() {
 	httpRequest("api/User/GetOnlineUser", "GET", null, handleGetOnlineUser, showError.bind(null, "System Error"));
@@ -14,27 +29,34 @@ function handleGetOnlineUser(response) {
 		return;
 	}
 	page.onlineUser = response.Data;
+	if (page.onlineUser.Type == 2) {
+		var btn = document.getElementById("user-modal-btn");
+		btn.parentNode.removeChild(btn);
+    }
 }
 function tryGetUsers() {
 	httpRequest("api/User/GetActiveUsers", "GET", null, handleGetUsers, showError.bind(null, "System Error"));
 }
 function openUserModal() {
-	var modal = document.getElementById("user-modal");
-	var btn = document.getElementById("user-modal-btn");
-	var span = document.getElementsByClassName("close")[0];
-	btn.onclick = function () {
-		modal.style.display = "block";
-	}
-	span.onclick = function () {
-		modal.style.display = "none";
-	}
-	window.onclick = function (event) {
-		if (event.target == modal) {
+
+	
+	if (page.onlineUser.Type != 2) {
+		var modal = document.getElementById("user-modal");
+		var btn = document.getElementById("user-modal-btn");
+		var span = document.getElementsByClassName("close")[0];
+		btn.onclick = function () {
+			modal.style.display = "block";
+		}
+		span.onclick = function () {
 			modal.style.display = "none";
 		}
+		window.onclick = function (event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
+		selectUser();
 	}
-	selectUser();
-
 }
 function selectUser() {
 
@@ -100,6 +122,74 @@ function handleGetUsers(response) {
 		if (user.Type == 1) {
 			page.managers.push(user);
 		}
+	}
+	pagination();
+	tryGetUsersByPage(1);
+
+	let userModelBtn = document.getElementById("user-modal-btn");
+	userModelBtn.onclick = openUserModal;
+	
+}
+function pagination() {
+	var userCount = page.users.length;
+	var pageCount = userCount / 5;
+	let paginationDiv = document.getElementById("pagination-box");
+	page.pageNumbers = [];
+	for (i = 1; i < pageCount+1; i++) {
+
+		let pageNumber = document.createElement("button");
+		pageNumber.className = "page-number";
+		pageNumber.id = "page-" + i;
+		pageNumber.innerHTML = i;
+		pageNumber.value = i;
+		paginationDiv.appendChild(pageNumber);
+		page.pageNumbers.push(i);
+		pageNumber.onclick = tryGetUsersByPage.bind(null, pageNumber.value)
+		
+    }
+
+}
+function tryGetUsersByPage(pageNo) {
+
+	classNameOrganizer(pageNo);
+	httpRequest("api/User/GetUsersByPageNo/?pageNo=" + pageNo, "GET", null, handleGetUsersByPage, showError.bind(null, "System Error"));
+}
+function classNameOrganizer(pageNo)
+{
+	for (i = 1; i < page.pageNumbers.length+1; i++) {
+		let pageNumberBtn = document.getElementById("page-" + i);
+		pageNumberBtn.className = "page-number other-pages";
+    }
+	let pageNumberBtn = document.getElementById("page-" + pageNo);
+	pageNumberBtn.className = "page-number current-page";
+}
+/*function appendUserForPage(pageNo) {
+	let userList = document.getElementById("user-list");
+	userList.innerHTML = "";
+	if (pageNo == 1) {
+		for (i = 0; i < 5; i++) {
+			let user = page.users[i]
+			appendUser(user);
+		}
+		return;
+	}
+	for (i = 5 * pageNo - 1; i < 5 * pageNo; i++) {
+		let user = page.users[i]
+		appendUser(user);
+    }
+}*/
+function handleGetUsersByPage(response) {
+	if (!response.Success) {
+		showError(response.ErrorMessage);
+		return;
+	}
+
+	let userList = document.getElementById('users');
+	userList.innerHTML = "";
+	
+	page.users = response.Data;
+	for (i = 0; i < page.users.length; i++) {
+		let user = page.users[i];
 		if (user.Type == 0) {
 			user.Type = "Admin";
 		}
@@ -117,8 +207,6 @@ function handleGetUsers(response) {
 		}
 		appendUser(user);
 	}
-	let userModelBtn = document.getElementById("user-modal-btn");
-	userModelBtn.onclick = openUserModal;
 }
 function tryInsertUser() {
 	var type = document.getElementById("select-user-type");
@@ -205,7 +293,7 @@ function appendUser(user) {
 
 	let userHtml = toDom(userHtmlString);
 
-	let userListDiv = document.getElementById("user-list");
+	let userListDiv = document.getElementById("users");
 	userListDiv.appendChild(userHtml);
 
 }

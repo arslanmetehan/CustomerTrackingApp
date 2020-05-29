@@ -36,6 +36,24 @@ namespace CustomerTrackingApp.Controllers
 				return Json(ApiResponse<List<UserModel>>.WithError(exp.ToString()));
 			}
 		}
+		[HttpGet]
+		[Route(nameof(GetUsersByPageNo))]
+		public ActionResult<ApiResponse<List<UserModel>>> GetUsersByPageNo(int pageNo)
+		{
+			try
+			{
+				int limit = 5;
+				var users = this._userService.GetUsersByPage(limit,pageNo);
+
+				var response = ApiResponse<List<UserModel>>.WithSuccess(users);
+
+				return Json(response);
+			}
+			catch (Exception exp)
+			{
+				return Json(ApiResponse<List<UserModel>>.WithError(exp.ToString()));
+			}
+		}
 
 		[HttpPost]
 		[Route(nameof(Login))]

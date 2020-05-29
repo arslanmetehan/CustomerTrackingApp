@@ -16,6 +16,7 @@ namespace CustomerTrackingApp.Services
         bool TryLogin(UserLoginModel loginData, HttpContext httpContext);
         void Logout(HttpContext httpContext);
         List<UserModel> GetAllUsers();
+        List<UserModel> GetUsersByPage(int limit,int pageNo);
         int UsernameCounter(string username);
         UserModel GetById(int id);
         int EmailCounter(string username);

@@ -1,10 +1,15 @@
 ﻿@model BaseViewModel
 <script type="text/javascript" src="~/scripts/User/Users.js"></script>
 <link rel="stylesheet" href="~/styles/users.css" />
+<link rel="stylesheet" href="~/styles/details.css" />
 <div class="header">header</div>
 <div class="page-container clearfix">
-    <div class="side-bar">
-        MENU
+    <div class="side-bar" id="side-bar">
+        <ul>
+            <li>
+                <a class="menu-item" id="home-btn">Home</a>
+            </li>
+        </ul>
     </div>
     <div class="clearfix" id="user-create-form">
         <div class="user-list-top">
@@ -15,42 +20,42 @@
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <h2>Create User</h2>
-                <div>
-                    <select id="select-user-type">
+                <div class="type-chose">
+                    <select class="select-box" id="select-user-type">
                         <option value="0">Admin</option>
                         <option value="1">Manager</option>
                         <option value="2">Employee</option>
                     </select>
-                    <button id="chose-type-btn">Chose Type</button>
+                    <button class="btn btn-inline" id="chose-type-btn">Chose Type</button>
                 </div>
                 <div id="user-type-title"></div>
-                <div>Username:</div>
-                <div><input type="text" id="user-create-username" /></div>
-                <div>Fullname:</div>
-                <div><input type="text" id="user-create-fullname" /></div>
-                <div>Password:</div>
-                <div><input type="password" id="user-create-password" /></div>
-                <div>Email:</div>
-                <div><input type="text" id="user-create-email" /></div>
-                <div>Gender:</div>
+                <div class="info-title">Username:</div>
+                <div><input class="info-input" type="text" id="user-create-username" /></div>
+                <div class="info-title">Fullname:</div>
+                <div><input class="info-input" type="text" id="user-create-fullname" /></div>
+                <div class="info-title">Password:</div>
+                <div><input class="info-input" type="password" id="user-create-password" /></div>
+                <div class="info-title">Email:</div>
+                <div><input class="info-input" type="text" id="user-create-email" /></div>
+                <div class="info-title">Gender:</div>
                 <div>
-                    <select id="select-gender">
+                    <select class="select-box" id="select-gender">
                         <option value="0">Female</option>
                         <option value="1">Male</option>
                     </select>
                 </div>
-                <div>Phone:</div>
-                <div><input type="text" id="user-create-phone" /></div>
-                <div>Birth Year:</div>
-                <div><input type="text" id="user-create-birthyear" /></div>
-                <div id="manager">Manager:</div>
+                <div class="info-title">Phone:</div>
+                <div><input class="info-input" type="text" id="user-create-phone" /></div>
+                <div class="info-title">Birth Year:</div>
+                <div><input class="info-input" type="text" id="user-create-birthyear" /></div>
+                <div  class="info-title" id="manager">Manager:</div>
                 <div>
                     <div>
-                        <select id="select-manager">
+                        <select class="select-box" id="select-manager">
                         </select>
                     </div>
                 </div>
-                <div><button id="user-create-btn">Add User!</button></div>
+                <div><button class="btn btn-down-left" id="user-create-btn">Add User!</button></div>
             </div>
         </div>
         <div class="user-list clearfix" id="user-list">
@@ -63,7 +68,9 @@
                 <div>Type</div>
                 <div>Birth Year</div>
             </div>
+            <div class="users clearfix" id="users"></div>
         </div>
     </div>
+    <div class="pagination-box" id="pagination-box"></div>
 </div>
 <div id="error" style="margin-bottom:60px;display:none;"></div>

@@ -12,6 +12,7 @@ namespace CustomerTrackingApp.Persistence
         UserModel GetById(int UserId);
         int GetUserIdByLogin(string username, string password);
         IEnumerable<UserModel> GetAll();
+        IEnumerable<UserModel> GetUsersByPage(int limit,int pageNo);
         int UsernameCounter(string username);
         int EmailCounter(string email);
     }

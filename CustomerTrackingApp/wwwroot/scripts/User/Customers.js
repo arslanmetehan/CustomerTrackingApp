@@ -2,7 +2,7 @@
 	let customerCreateBtn = document.getElementById("customer-create-btn");
 	customerCreateBtn.onclick = tryInsertCustomer;
 
-	tryGetCustomers();
+	
 	tryGetOnlineUser();
 	createMenu();
 }
@@ -29,7 +29,7 @@ function handleGetOnlineUser(response) {
 		return;
 	}
 	page.onlineUser = response.Data;
-
+	tryGetCustomers();
 }
 function tryGetCustomers() {
 	httpRequest("api/User/GetCustomers", "GET", null, handleGetCustomers, showError.bind(null, "System Error"));
@@ -62,10 +62,7 @@ function handleGetCustomers(response) {
 	page.customers = response.Data;
 	pagination();
 	tryGetCustomersByPage(1);
-
-	let userModelBtn = document.getElementById("user-modal-btn");
-	userModelBtn.onclick = openUserModal;
-	
+	openUserModal();
 }
 function pagination() {
 	var customersCount = page.customers.length;

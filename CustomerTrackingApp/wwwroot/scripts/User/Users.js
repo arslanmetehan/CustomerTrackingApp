@@ -2,7 +2,8 @@
 	let userCreateBtn = document.getElementById("user-create-btn");
 	userCreateBtn.onclick = tryInsertUser;
 
-	tryGetUsers();
+	
+	
 	tryGetOnlineUser();
 	createMenu();
 }
@@ -10,12 +11,6 @@ function redirectTo(url) {
 	redirect(""+url+"");
 }
 function createMenu() {
-	/*let menu = document.getElementById("side-bar");
-	let home = document.createElement("button");
-	home.class = "menu-item";
-	home.innerHTML = "Home";
-	menu.appendChild(home);
-	home.onclick = redirectTo.bind(null, "Home/Index");*/
 	let home = document.getElementById("home-btn");
 	home.setAttribute("href", "Index");
 	
@@ -32,7 +27,8 @@ function handleGetOnlineUser(response) {
 	if (page.onlineUser.Type == 2) {
 		var btn = document.getElementById("user-modal-btn");
 		btn.parentNode.removeChild(btn);
-    }
+	}
+	tryGetUsers();
 }
 function tryGetUsers() {
 	httpRequest("api/User/GetActiveUsers", "GET", null, handleGetUsers, showError.bind(null, "System Error"));
@@ -123,12 +119,10 @@ function handleGetUsers(response) {
 			page.managers.push(user);
 		}
 	}
+	
 	pagination();
 	tryGetUsersByPage(1);
-
-	let userModelBtn = document.getElementById("user-modal-btn");
-	userModelBtn.onclick = openUserModal;
-	
+	openUserModal();
 }
 function pagination() {
 	var userCount = page.users.length;

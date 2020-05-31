@@ -2,6 +2,7 @@
 using CustomerTrackingApp.Models;
 using CustomerTrackingApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,8 @@ namespace CustomerTrackingApp.Controllers
 			try
 			{
 				int limit = 5;
-				var users = this._userService.GetUsersByPage(limit,pageNo);
+				int offset = (pageNo - 1) * limit;
+				var users = this._userService.GetUsersByPage(limit, offset);
 
 				var response = ApiResponse<List<UserModel>>.WithSuccess(users);
 

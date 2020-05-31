@@ -44,23 +44,12 @@ namespace CustomerTrackingApp.Persistence.Dapper
                 return dbConnection.Query<UserModel>("SELECT * FROM User");
             }
         }
-        public IEnumerable<UserModel> GetUsersByPage(int limit,int pageNo)
+        public IEnumerable<UserModel> GetUsersByPage(int limit,int offset)
         {
-            if(pageNo == 1)
+            using (IDbConnection dbConnection = this.OpenConnection())
             {
-                using (IDbConnection dbConnection = this.OpenConnection())
-                {
-                    return dbConnection.Query<UserModel>("SELECT * FROM User LIMIT 5");
-                }
+                return dbConnection.Query<UserModel>("SELECT * FROM User LIMIT @Limit OFFSET @Offset", new { Limit = limit, Offset = offset });
             }
-            else
-            {
-                using (IDbConnection dbConnection = this.OpenConnection())
-                {
-                    return dbConnection.Query<UserModel>("SELECT * FROM User LIMIT " + limit + " OFFSET " + (pageNo - 1) * limit + "");
-                }
-            }
-
         }
         public int UsernameCounter(string username)
         {

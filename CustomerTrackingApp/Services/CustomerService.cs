@@ -23,6 +23,11 @@ namespace CustomerTrackingApp.Services
             this._customerRepository.Insert(customer);
             this._logRepository.Log(Enums.LogType.Info, $"Inserted New Customer : {customer.FullName}");
         }
+        public void AddNewActivity(Activity activity)
+        {
+            this._customerRepository.InsertActivity(activity);
+            this._logRepository.Log(Enums.LogType.Info, $"Inserted New Customer : {activity.Description}");
+        }
 
         public void UpdateUser(Customer customer)
         {
@@ -32,6 +37,11 @@ namespace CustomerTrackingApp.Services
         {
             var users = this._customerRepository.GetAll().ToList();
             return users;
+        }
+        public List<ActivityModel> GetActivitiesByCustomerId(int customerId)
+        {
+            var activities = this._customerRepository.GetActivitiesByCustomerId(customerId).ToList();
+            return activities;
         }
         public List<CustomerModel> GetCustomersByPage(int limit,int pageNo)
         {
@@ -45,6 +55,14 @@ namespace CustomerTrackingApp.Services
         public CustomerModel GetById(int id)
         {
             return this._customerRepository.GetById(id);
+        }
+        public ActivityModel GetActivityById(int id)
+        {
+            return this._customerRepository.GetActivityById(id);
+        }
+        public ActivityModel GetLastActivity(int CustomerId)
+        {
+            return this._customerRepository.GetLastActivity(CustomerId);
         }
     }
 }

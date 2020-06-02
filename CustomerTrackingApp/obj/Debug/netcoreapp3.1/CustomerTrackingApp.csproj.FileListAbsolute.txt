@@ -49,3 +49,4 @@ C:\Workspace\github\CustomerTrackingApp\CustomerTrackingApp\obj\Debug\netcoreapp
 C:\Workspace\github\CustomerTrackingApp\CustomerTrackingApp\obj\Debug\netcoreapp3.1\CustomerTrackingApp.pdb
 C:\Workspace\github\CustomerTrackingApp\CustomerTrackingApp\obj\Debug\netcoreapp3.1\CustomerTrackingApp.genruntimeconfig.cache
 C:\Workspace\github\CustomerTrackingApp\CustomerTrackingApp\obj\Debug\netcoreapp3.1\Razor\Views\Home\Customers.cshtml.g.cs
+C:\Workspace\github\CustomerTrackingApp\CustomerTrackingApp\obj\Debug\netcoreapp3.1\Razor\Views\User\CustomerProfile.cshtml.g.cs

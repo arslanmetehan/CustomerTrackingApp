@@ -15,12 +15,14 @@ namespace CustomerTrackingApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IServices services;
         private readonly IUserService _userService;
+        private readonly ICustomerService _customerService;
 
-        public UserController(ILogger<HomeController> logger, IServices services, IUserService userService)
+        public UserController(ILogger<HomeController> logger, IServices services, IUserService userService, ICustomerService customerService)
         {
             _logger = logger;
             this.services = services;
             this._userService = userService;
+            this._customerService = customerService;
 
         }
         [HttpGet]
@@ -45,6 +47,23 @@ namespace CustomerTrackingApp.Controllers
             model.Phone = user.Phone;
             model.Type = user.Type;
 
+            return View(model);
+        }
+        public ActionResult CustomerProfile(int id)
+        {
+            var onlineUser = this.services.UserService.GetOnlineUser(this.HttpContext);
+            if (onlineUser == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+           
+            var model = this.services.ViewService.CreateViewModel<CustomerViewModel>(this.HttpContext, nameof(this.CustomerProfile));
+            var customerId = id;
+            var customer = this._customerService.GetById(customerId);
+            model.Id = id;
+            model.FullName = customer.FullName;
+            model.Phone = customer.Phone;
+            
             return View(model);
         }
     }

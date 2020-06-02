@@ -91,6 +91,24 @@ namespace CustomerTrackingApp.Persistence.Dapper
 				command = new SQLiteCommand(sql, conn);
 				command.ExecuteNonQuery();
 			}
+			sql = "SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name = 'Activity'";
+			command = new SQLiteCommand(sql, conn);
+			count = Convert.ToInt32(command.ExecuteScalar());
+			if (count == 0)
+			{
+				sql = "create table Activity (" +
+							"Id INTEGER PRIMARY KEY, " +
+							"UserId INT NOT NULL, " +
+							"CustomerId INT NOT NULL, " +
+							"ActivityType INT NOT NULL, " +
+							"Description TEXT NOT NULL, " +
+							"Amount REAL NOT NULL, " +
+							"CurrentDebt REAL NOT NULL " +
+						")";
+
+				command = new SQLiteCommand(sql, conn);
+				command.ExecuteNonQuery();
+			}
 		}
 
 	}

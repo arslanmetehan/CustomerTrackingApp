@@ -1,0 +1,26 @@
+﻿.activity-info
+{
+    float:left;
+    padding:3px;
+    margin-right:15px;
+    margin-bottom:20px;
+    min-width:250px;
+}
+.activity-info.purchase-activity
+{
+    color:#0026ff;
+    color:#bf2424;
+}
+.activity-info.payment-activity {
+    color: #0094ff;
+}
+.activity-info.return-activity {
+    color: #ff6a00;
+}
+.activity-info.refund-activity {
+    color: #650d9a;
+}
+.process-btns
+{
+    margin-bottom:30px;
+}

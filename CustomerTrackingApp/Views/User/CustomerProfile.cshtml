@@ -1,0 +1,61 @@
+﻿@model CustomerViewModel
+<script type="text/javascript" src="~/scripts/User/CustomerProfile.js"></script>
+<link rel="stylesheet" href="~/styles/main.css" />
+<link rel="stylesheet" href="~/styles/profile.css" />
+<link rel="stylesheet" href="~/styles/customerprofile.css" />
+<link rel="stylesheet" href="~/styles/users.css" />
+<link rel="stylesheet" href="~/styles/details.css" />
+<div class="page-container clearfix">
+    <div class="profile-header">
+        <div class="username">@Model.FullName</div>
+        <div class="phone">@Model.Phone</div>
+        <div class="user-type">Client</div>
+        <div class="phone" id="current-dept-value"></div>
+        <input id="customer-id-input" type="hidden" value="@Model.Id" />
+    </div>
+    <div id="purchase-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Purchase</h2>
+            <div class="info-title">Description:</div>
+            <div><input class="info-input" type="text" id="purchase-create-description" /></div>
+            <div class="info-title">Product Amount:</div>
+            <div><input class="info-input" type="text" id="purchase-create-productamount" /></div>
+            <div class="info-title">Payment Amount:</div>
+            <div><input class="info-input" type="text" id="purchase-create-paymentamount" /></div>
+            <div><button class="btn btn-down-left" id="purchase-create-btn">Save Purchase !</button></div>
+        </div>
+    </div>
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Payment</h2>
+            <div class="info-title">Description:</div>
+            <div><input class="info-input" type="text" id="payment-create-description" /></div>
+            <div class="info-title">Payment Amount:</div>
+            <div><input class="info-input" type="text" id="payment-create-paymentamount" /></div>
+            <div><button class="btn btn-down-left" id="payment-create-btn">Save Payment !</button></div>
+        </div>
+    </div>
+    <div id="return-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Return</h2>
+            <div class="info-title">Description:</div>
+            <div><input class="info-input" type="text" id="return-create-description" /></div>
+            <div class="info-title">Returned Product Amount:</div>
+            <div><input class="info-input" type="text" id="return-create-productamount" /></div>
+            <div><button class="btn btn-down-left" id="return-create-btn">Save Return !</button></div>
+        </div>
+    </div>
+    <div class="process-btns">
+        <button class="process-btn btn btn-inline" id="purchase-btn">Add Purchase</button>
+        <button class="process-btn btn btn-inline" id="payment-btn">Add Payment</button>
+        <button class="process-btn btn btn-inline" id="return-btn">Add Return</button>
+    </div>
+    <div class="activity-box" id="activity-list">
+    </div>
+</div>
+
+
+<div id="error" style="margin-bottom:60px;display:none;"></div>

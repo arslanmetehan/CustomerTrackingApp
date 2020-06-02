@@ -11,10 +11,14 @@ namespace CustomerTrackingApp.Services
     public interface ICustomerService
     {
         void AddNewUser(Customer customer);
+        void AddNewActivity(Activity activity);
         void UpdateUser(Customer customer);
         List<CustomerModel> GetAllCustomers();
+        List<ActivityModel> GetActivitiesByCustomerId(int customerId);
         List<CustomerModel> GetCustomersByPage(int limit,int pageNo);
         CustomerModel GetById(int id);
+        ActivityModel GetActivityById(int id);
         int PhoneCounter(string phone);
+        ActivityModel GetLastActivity(int CustomerId);
     }
 }

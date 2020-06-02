@@ -32,7 +32,7 @@ function handleGetOnlineUser(response) {
 	tryGetCustomers();
 }
 function tryGetCustomers() {
-	httpRequest("api/User/GetCustomers", "GET", null, handleGetCustomers, showError.bind(null, "System Error"));
+	httpRequest("api/Customer/GetCustomers", "GET", null, handleGetCustomers, showError.bind(null, "System Error"));
 }
 function openUserModal() {
 
@@ -97,7 +97,7 @@ function pagination() {
 function tryGetCustomersByPage(pageNo) {
 
 	classNameOrganizer(pageNo);
-	httpRequest("api/User/GetCustomersByPageNo/?pageNo=" + pageNo, "GET", null, handleGetCustomersByPage, showError.bind(null, "System Error"));
+	httpRequest("api/Customer/GetCustomersByPageNo/?pageNo=" + pageNo, "GET", null, handleGetCustomersByPage, showError.bind(null, "System Error"));
 }
 function classNameOrganizer(pageNo)
 {
@@ -157,7 +157,7 @@ function tryInsertCustomer() {
 
 	};
 
-	httpRequest("api/User/CreateCustomer", "POST", data, handleInsertCustomer, showError.bind(null, "System Error"));
+	httpRequest("api/Customer/CreateCustomer", "POST", data, handleInsertCustomer, showError.bind(null, "System Error"));
 }
 function redirectToCustomers() {
 	redirect("Home/Customers");
@@ -174,16 +174,16 @@ function handleInsertCustomer(response) {
 	redirectToCustomers();
 }
 function appendCustomer(customer) {
-	let userProfileLink = generateHref("Customer/Profile/##user.Id##");
-	let userTemplate = '<div class="clearfix user-line-box" id="user-id-##user.Id##">';
-	userTemplate += '<div class="user-info">##user.FullName##</div>';
-	userTemplate += '<div class="user-info">##user.Phone##</div>';
+	let userProfileLink = generateHref("User/CustomerProfile/##customer.Id##");
+	let userTemplate = '<div class="clearfix user-line-box" id="user-id-##customer.Id##">';
+	userTemplate += '<a class="user-info profile-btn" href="' + userProfileLink + '">##customer.FullName##</a>';
+	userTemplate += '<div class="user-info">##customer.Phone##</div>';
 	userTemplate += '</div>';
 
 	let userHtmlString = userTemplate
-		.split("##user.Id##").join(customer.Id)//.replace("##user.Id##", userModel.Id)
-		.split("##user.FullName##").join(customer.FullName)//.replace("##user.Username##", userModel.Username)
-		.split("##user.Phone##").join(customer.Phone)//.replace("##user.Email##", userModel.Email)
+		.split("##customer.Id##").join(customer.Id)//.replace("##user.Id##", userModel.Id)
+		.split("##customer.FullName##").join(customer.FullName)//.replace("##user.Username##", userModel.Username)
+		.split("##customer.Phone##").join(customer.Phone)//.replace("##user.Email##", userModel.Email)
 
 	let userHtml = toDom(userHtmlString);
 

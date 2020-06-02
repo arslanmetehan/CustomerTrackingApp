@@ -20,6 +20,15 @@ namespace CustomerTrackingApp.Persistence.Dapper
                 customer.Id = dbConnection.ExecuteScalar<int>("SELECT last_insert_rowid()");
             }
         }
+        public void InsertActivity(Activity activity)
+        {
+            using (IDbConnection dbConnection = this.OpenConnection())
+            {
+                dbConnection.Execute("INSERT INTO Activity (UserId, CustomerId, Description, ActivityType, Amount, CurrentDebt) " +
+                    "VALUES(@UserId, @CustomerId, @Description, @ActivityType, @Amount, @CurrentDebt)", activity);
+                activity.Id = dbConnection.ExecuteScalar<int>("SELECT last_insert_rowid()");
+            }
+        }
         public CustomerModel GetById(int id)
         {
             using (IDbConnection dbConnection = this.OpenConnection())
@@ -27,11 +36,25 @@ namespace CustomerTrackingApp.Persistence.Dapper
                 return dbConnection.QuerySingle<CustomerModel>("SELECT * FROM Customer WHERE Id = @Id", new { Id = id });
             }
         }
+        public ActivityModel GetActivityById(int id)
+        {
+            using (IDbConnection dbConnection = this.OpenConnection())
+            {
+                return dbConnection.QuerySingle<ActivityModel>("SELECT * FROM Activity WHERE Id = @Id", new { Id = id });
+            }
+        }
         public IEnumerable<CustomerModel> GetAll()
         {
             using (IDbConnection dbConnection = this.OpenConnection())
             {
                 return dbConnection.Query<CustomerModel>("SELECT * FROM Customer");
+            }
+        }
+        public IEnumerable<ActivityModel> GetActivitiesByCustomerId(int customerId)
+        {
+            using (IDbConnection dbConnection = this.OpenConnection())
+            {
+                return dbConnection.Query<ActivityModel>("SELECT * FROM Activity WHERE CustomerId = @CustomerId ORDER BY Id DESC", new { CustomerId = customerId });
             }
         }
         public IEnumerable<CustomerModel> GetCustomersByPage(int limit,int pageNo)
@@ -57,6 +80,14 @@ namespace CustomerTrackingApp.Persistence.Dapper
             using (IDbConnection dbConnection = this.OpenConnection())
             {
                 return dbConnection.QuerySingle<int>("SELECT COUNT(*) FROM Customer WHERE Phone = @Phone", new { Phone = phone });
+            }
+        }
+        public ActivityModel GetLastActivity(int id)
+        {
+            
+            using (IDbConnection dbConnection = this.OpenConnection())
+            {
+                return dbConnection.QuerySingle<ActivityModel>("SELECT * FROM Activity WHERE CustomerId = @CustomerId ORDER BY Id DESC LIMIT 1 ", new { CustomerId = id });
             }
         }
     }

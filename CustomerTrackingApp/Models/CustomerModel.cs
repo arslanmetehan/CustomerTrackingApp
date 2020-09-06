@@ -14,6 +14,13 @@ namespace CustomerTrackingApp.Entities
         public int Id { get; set; }
         public string FullName { get; set; }
         public int Phone { get; set; }
+        public CustomerModel(Customer customer)
+        {
+            this.Id = customer.Id;
+            this.FullName = customer.FullName;
+            this.Phone = customer.Phone;
+        }
 
     }
+
 }

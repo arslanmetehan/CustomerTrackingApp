@@ -54,7 +54,7 @@ namespace CustomerTrackingApp.Persistence.Dapper
         {
             using (IDbConnection dbConnection = this.OpenConnection())
             {
-                return dbConnection.Query<ActivityModel>("SELECT * FROM Activity WHERE CustomerId = @CustomerId ORDER BY Id DESC", new { CustomerId = customerId });
+                return dbConnection.Query<ActivityModel>("SELECT * FROM Activity WHERE CustomerId = @CustomerId ORDER BY Id ASC", new { CustomerId = customerId });
             }
         }
         public IEnumerable<CustomerModel> GetCustomersByPage(int limit,int pageNo)

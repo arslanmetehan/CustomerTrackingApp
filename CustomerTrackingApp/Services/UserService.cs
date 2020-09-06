@@ -59,9 +59,9 @@ namespace CustomerTrackingApp.Services
             var users = this._userRepository.GetAll().ToList();
             return users;
         }
-        public List<UserModel> GetUsersByPage(int limit,int offset)
+        public List<UserModel> GetUsersByPage(int count,int pageNo)
         {
-            var users = this._userRepository.GetUsersByPage(limit, offset).ToList();
+            var users = this._userRepository.GetUsersByPage(count, pageNo).ToList();
             return users;
         }
         public int UsernameCounter(string username)

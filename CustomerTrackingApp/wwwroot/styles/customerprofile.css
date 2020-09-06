@@ -1,4 +1,33 @@
-﻿.activity-info
+﻿
+.activity-box
+{
+    max-height:600px;
+    overflow-y:scroll;
+}
+.current-debt-value
+{
+    position:absolute;
+    left:15.5%;
+    top:100px;
+}
+.current-debt-value :first-child
+{
+    font-weight:bold;
+    color:#333333;
+}
+.current-debt-value :last-child
+{
+    color:#e82929;
+}
+.message-box {
+    display: none;
+    position: absolute;
+    min-width: 200px;
+    min-height: 30px;
+    right: 5%;
+    top: 15%;
+}
+.activity-info
 {
     float:left;
     padding:3px;
@@ -23,4 +52,14 @@
 .process-btns
 {
     margin-bottom:30px;
+}
+.customer-img
+{
+ 
+}
+#customer-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+
 }

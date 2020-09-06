@@ -1,4 +1,5 @@
-﻿using CustomerTrackingApp.Enums;
+﻿using CustomerTrackingApp.Entities;
+using CustomerTrackingApp.Enums;
 using Dapper;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,11 @@ namespace CustomerTrackingApp.Persistence.Dapper
 			{
 				dbConnection.Execute("INSERT INTO Log (Type, Message, Timestamp) VALUES(@Type, @Message, @Timestamp)", new { Type = type, Message = message, Timestamp = DateTime.UtcNow.Ticks });
 			}
+		}
+
+		public void Log(Log LogType)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

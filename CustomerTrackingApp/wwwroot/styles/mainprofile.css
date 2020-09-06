@@ -1,0 +1,48 @@
+﻿.profile-header {
+    margin-bottom: 40px;
+}
+
+.profile-header span {
+    float: left;
+    padding: 3px;
+    margin-right: 20px;
+    padding-top: 17px;
+    display: block;
+}
+
+.profile-header strong {
+    float: left;
+    padding: 3px;
+    margin-right: 20px;
+    padding-top: 17px;
+    display: block;
+}
+
+.profile-header div {
+    float: left;
+    padding: 3px;
+    margin-right: 20px;
+}
+.user-type {
+    font-size: 14px;
+    font-style: italic;
+}
+.profile-header {
+    padding: 20px;
+}
+.page-container {
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.username {
+    font-size: 17px;
+    color: #ff6a00;
+    margin-bottom: 10px;
+}
+
+.fullname {
+    font-size: 15px;
+    margin-bottom: 12px;
+}

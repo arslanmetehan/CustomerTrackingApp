@@ -1,12 +1,4 @@
-﻿body
-{
-    font-family:roboto;
-}
-.header
-{
-    min-height:60px;
-    padding:20px;
-}
+﻿
 .side-bar
 {
     float:left;
@@ -20,91 +12,10 @@
 {
     font-size:14px;
 }
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-.modal-content {
-    background-color: #fefefe;
-    position: relative;
-    margin: auto;
-    padding: 100px;
-    padding-top:30px;
-    border-radius: 5px;
-    width: 50%;
-    min-height: 50%;
-}
-/* The Close Button */
-.close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
 
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-.modal-content h2 
-{
-    color:#ff6a00;
-}
-#user-type-title {
-    padding: 5px;
-    padding-top: 0px;
-    margin-bottom: 15px;
-}
-.select-box {
-    padding: 5px;
-    padding-left: 8px;
-    padding-right: 8px;
-    border-radius: 5px;
-    outline: 0px;
-    margin-bottom: 10px;
-}
-.select-box option:hover
-{
-    color:#ff6a00;
-}
-.info-title
-{
-    margin-bottom:7px;
-  
-}
-.info-input
-{
-    border:1px solid #888;
-    outline:0px;
-    padding-left:5px;
-    height:30px;
-    border-radius:5px;
-    margin-bottom:10px;
-}
-.type-chose
-{
-    margin-bottom:20px;
-}
-.page-container {
-    position: relative;
-}
-.pagination-box
-{
-    position:absolute;
-    left:50%;
-    bottom:10%;
-}
+
+
+
 .container {
     
    
@@ -176,34 +87,4 @@
 .user-list a
 {
     color:#0b54d8;
-}
-.page-number {
-    border: 0px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 8px;
-    padding-right: 12px;
-    padding-left: 12px;
-    text-align: center;
-    line-height: 100%;
-    margin-right: 10px;
-    font-size: 11px;
-    background: none;
-    color: #0b54d8;
-    outline: 0px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.page-number.current-page
-{
-
-    background: #ff6a00;
-    color: #f2f2f2;
-    cursor:default;
-}
-.page-number.other-pages:hover
-{
-    background:#20fbee;
-    color:#ff6a00;
-    transition:0.2s;
 }

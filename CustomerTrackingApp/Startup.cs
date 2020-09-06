@@ -38,9 +38,12 @@ namespace CustomerTrackingApp
             services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
             services.AddSingleton<IServices, ServiceContainer>();
-            services.AddSingleton<IUserRepository, Persistence.Dapper.UserRepository>();
+            /*services.AddSingleton<IUserRepository, Persistence.Dapper.UserRepository>();
             services.AddSingleton<ICustomerRepository, Persistence.Dapper.CustomerRepository>();
-            services.AddSingleton<ILogRepository, Persistence.Dapper.LogRepository>();
+            services.AddSingleton<ILogRepository, Persistence.Dapper.LogRepository>();*/
+            services.AddSingleton<IUserRepository, Persistence.EF.UserRepository>();
+            services.AddSingleton<ICustomerRepository, Persistence.EF.CustomerRepository>();
+            services.AddSingleton<ILogRepository, Persistence.EF.LogRepository>();
 
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<ICustomerService, CustomerService>();

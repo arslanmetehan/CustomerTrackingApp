@@ -21,5 +21,18 @@ namespace CustomerTrackingApp.Entities
         public int BirthYear { get; set; }
         public IsActive IsActive { get; set; }
         public int ManagerId { get; set; }
+        public UserModel(User user)
+        {
+            this.Id = user.Id;
+            this.Username = user.Username;
+            this.FullName = user.FullName;
+            this.Email = user.Email;
+            this.Phone = user.Phone;
+            this.Gender = user.Gender;
+            this.Type = user.Type;
+            this.BirthYear = user.BirthYear;
+            this.IsActive = user.IsActive;
+            this.ManagerId = user.ManagerId;
+        }
     }
 }

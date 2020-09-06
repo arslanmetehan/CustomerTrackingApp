@@ -44,8 +44,7 @@ namespace CustomerTrackingApp.Controllers
 			try
 			{
 				int limit = 5;
-				int offset = (pageNo - 1) * limit;
-				var users = this._userService.GetUsersByPage(limit, offset);
+				var users = this._userService.GetUsersByPage(limit, pageNo);
 
 				var response = ApiResponse<List<UserModel>>.WithSuccess(users);
 

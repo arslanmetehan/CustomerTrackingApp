@@ -1,4 +1,5 @@
 ﻿using CustomerTrackingApp.Enum;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,5 +19,16 @@ namespace CustomerTrackingApp.Entities
         public string Description { get; set; }
         public decimal Amount { get; set; }
         public decimal CurrentDebt { get; set; }
+        public ActivityModel() { }
+        public ActivityModel(Activity activity)
+        {
+            this.Id = activity.Id;
+            this.UserId = activity.UserId;
+            this.CustomerId = activity.CustomerId;
+            this.ActivityType = activity.ActivityType;
+            this.Description = activity.Description;
+            this.Amount = activity.Amount;
+            this.CurrentDebt = activity.CurrentDebt;
+        }
     }
 }

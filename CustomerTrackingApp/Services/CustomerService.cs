@@ -1,4 +1,5 @@
 ﻿using CustomerTrackingApp.Entities;
+using CustomerTrackingApp.Enums;
 using CustomerTrackingApp.Models;
 using CustomerTrackingApp.Persistence;
 using Microsoft.AspNetCore.Http;

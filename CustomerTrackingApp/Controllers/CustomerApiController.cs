@@ -1,4 +1,5 @@
 ﻿using CustomerTrackingApp.Entities;
+using CustomerTrackingApp.Helper;
 using CustomerTrackingApp.Models;
 using CustomerTrackingApp.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -89,6 +90,7 @@ namespace CustomerTrackingApp.Controllers
 				{
 					return Json(ApiResponse<CustomerModel>.WithError("Name is required !"));
 				}
+			
 				var firstActivity = new Activity();
 				firstActivity.Amount = 0;
 				firstActivity.CurrentDebt = 0;
@@ -150,63 +152,51 @@ namespace CustomerTrackingApp.Controllers
 				{
 					return Json(ApiResponse<List<ActivityModel>>.WithError("Not authorized !"));
 				}
+				
 				paymentAmount = Math.Round(paymentAmount, 2);
 				model.CurrentDebt = Math.Round(model.CurrentDebt, 2);
 				model.Amount = Math.Round(model.Amount, 2);
+				
+				List<ActivityModel> result = new List<ActivityModel>();
+				
 				if (model.ActivityType == Enum.ActivityType.Payment)
 				{
-					ActivityModel result = null;
+					
 					var newActivity = new Activity();
 					newActivity.Description = model.Description;
 					newActivity.CustomerId = model.CustomerId;
-					newActivity.Amount = model.Amount;
-					newActivity.ActivityType = model.ActivityType;
-					newActivity.CurrentDebt = model.CurrentDebt;
-					
-					this._customerService.AddNewActivity(newActivity);
-					result = this._customerService.GetActivityById(newActivity.Id);
-					
-					return Json(ApiResponse<ActivityModel>.WithSuccess(result));
-				}
-				if((model.ActivityType == Enum.ActivityType.Purchase))
-				{
-					ActivityModel result = null;
-					var newActivity = new Activity();
 					newActivity.UserId = model.UserId;
-					newActivity.Description = model.Description;
-					newActivity.CustomerId = model.CustomerId;
-					newActivity.Amount = model.Amount;
 					newActivity.ActivityType = model.ActivityType;
-					newActivity.CurrentDebt = model.CurrentDebt;
-
-					this._customerService.AddNewActivity(newActivity);
-					
-					if (model.ActivityType == Enum.ActivityType.Purchase && paymentAmount > 0)
+					var lastActivity = this._customerService.GetLastActivity(model.CustomerId);
+					var currentDebt = lastActivity.CurrentDebt;
+					if(currentDebt < model.Amount)
 					{
-						var paymentActivity = new Activity();
-						paymentActivity.Description = model.Description;
-						paymentActivity.UserId = onlineUser.Id;
-						paymentActivity.CustomerId = model.CustomerId;
-						paymentActivity.Amount = paymentAmount;
-						paymentActivity.ActivityType = Enum.ActivityType.Payment;
-						paymentActivity.CurrentDebt = model.CurrentDebt;
-						this._customerService.AddNewActivity(paymentActivity);
+						newActivity.Amount = currentDebt;
+						newActivity.CurrentDebt = 0;
+					}
+					else
+					{
+						newActivity.Amount = model.Amount;
+						newActivity.CurrentDebt = currentDebt - model.Amount;
 					}
 					
-					result = this._customerService.GetActivityById(newActivity.Id);
-
-					return Json(ApiResponse<ActivityModel>.WithSuccess(result));
+					
+					this._customerService.AddNewActivity(newActivity);
+					result.Add(this._customerService.GetActivityById(newActivity.Id));
+					
+					return Json(ApiResponse<List<ActivityModel>>.WithSuccess(result));
 				}
-				if(model.ActivityType == Enum.ActivityType.ProductReturn)
+				if (model.ActivityType == Enum.ActivityType.Purchase && paymentAmount > 0)
 				{
-					ActivityModel result = null;
+					
+					
 					var newActivity = new Activity();
 					newActivity.UserId = model.UserId;
 					newActivity.Description = model.Description;
 					newActivity.CustomerId = model.CustomerId;
 					newActivity.Amount = model.Amount;
 					newActivity.ActivityType = model.ActivityType;
-					newActivity.CurrentDebt = model.CurrentDebt;
+					newActivity.CurrentDebt = model.Amount;
 
 					this._customerService.AddNewActivity(newActivity);
 					
@@ -215,13 +205,68 @@ namespace CustomerTrackingApp.Controllers
 					paymentActivity.UserId = onlineUser.Id;
 					paymentActivity.CustomerId = model.CustomerId;
 					paymentActivity.Amount = paymentAmount;
+					paymentActivity.ActivityType = Enum.ActivityType.Payment;
+					var lastActivity = this._customerService.GetLastActivity(model.CustomerId);
+					var currentDebt = lastActivity.CurrentDebt - paymentAmount;
+					paymentActivity.CurrentDebt = currentDebt;
+					
+					this._customerService.AddNewActivity(paymentActivity);
+					result.Add(newActivity.ToModel());
+					result.Add(paymentActivity.ToModel());
+					return Json(ApiResponse<List<ActivityModel>>.WithSuccess(result));
+				}
+				if ((model.ActivityType == Enum.ActivityType.Purchase) && paymentAmount <= 0)
+				{
+					
+					var newActivity = new Activity();
+					newActivity.UserId = model.UserId;
+					newActivity.Description = model.Description;
+					newActivity.CustomerId = model.CustomerId;
+					newActivity.Amount = model.Amount;
+					newActivity.ActivityType = model.ActivityType;
+					newActivity.CurrentDebt = model.Amount;
+
+					this._customerService.AddNewActivity(newActivity);
+
+					result.Add(this._customerService.GetActivityById(newActivity.Id));
+
+					return Json(ApiResponse<List<ActivityModel>>.WithSuccess(result));
+				}
+				if(model.ActivityType == Enum.ActivityType.ProductReturn)
+				{
+					
+					var newActivity = new Activity();
+					newActivity.UserId = model.UserId;
+					newActivity.Description = model.Description;
+					newActivity.CustomerId = model.CustomerId;
+					newActivity.Amount = model.Amount;
+					newActivity.ActivityType = model.ActivityType;
+					var currentDebt = this._customerService.GetLastActivity(model.CustomerId).CurrentDebt;
+					newActivity.CurrentDebt = currentDebt;
+
+					this._customerService.AddNewActivity(newActivity);
+					result.Add(this._customerService.GetActivityById(newActivity.Id));
+					var paymentActivity = new Activity();
+					paymentActivity.Description = model.Description;
+					paymentActivity.UserId = onlineUser.Id;
+					paymentActivity.CustomerId = model.CustomerId;
+					if(model.CurrentDebt <= paymentAmount)
+					{
+						paymentActivity.Amount = paymentAmount - (paymentAmount - currentDebt);
+						paymentActivity.CurrentDebt = 0;
+					}
+					else
+					{
+						paymentActivity.Amount = 0;
+						paymentActivity.CurrentDebt = currentDebt - paymentAmount;
+
+					}
 					paymentActivity.ActivityType = Enum.ActivityType.PaymentReturn;
-					paymentActivity.CurrentDebt = model.CurrentDebt;
 					this._customerService.AddNewActivity(paymentActivity);
 					
-					result = this._customerService.GetActivityById(newActivity.Id);
+					result.Add(this._customerService.GetActivityById(paymentActivity.Id));
 
-					return Json(ApiResponse<ActivityModel>.WithSuccess(result));
+					return Json(ApiResponse<List<ActivityModel>>.WithSuccess(result));
 				}
 				return Json(ApiResponse<ActivityModel>.WithError("FONKSIYON BULUNAMADI"));
 			}

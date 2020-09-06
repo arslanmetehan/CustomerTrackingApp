@@ -2,14 +2,40 @@
 	tryGetOnlineUser();
 	let purchaseCreateBtn = document.getElementById("purchase-create-btn");
 	purchaseCreateBtn.onclick = tryInsertPurchase;
+
 	let paymentCreateBtn = document.getElementById("payment-create-btn");
 	paymentCreateBtn.onclick = tryInsertPayment;
+
 	let returnCreateBtn = document.getElementById("return-create-btn");
 	returnCreateBtn.onclick = tryInsertReturn;
+	
+	let msgBoxBtn = document.getElementById("message-box-btn");
+	msgBoxBtn.onclick = clearMsg;
+
 	let customerId = parseInt(document.getElementById("customer-id-input").value);
 	page.customerId = customerId;
+
 	tryGetLastActivityByCustomerId(customerId);
 	tryGetActivitiesByCustomerId(customerId);
+	ReplacingImage(customerId);
+}
+function getCustomerImg(customerId) {
+	/*var img = new Image();
+	img.src = '....images/customer-image-"' + customerId + '".jpg';
+	var div = document.getElementById('customer-img');
+	div.innerHTML += '<img src="' + img.src + '" />'; */
+
+}
+function ReplacingImage(customerId) {
+
+	document.getElementById("customer-img").src = "../../images/customer-image-" + customerId+ ".jpg"
+
+}
+function clearMsg() {
+	let msg = document.getElementById("message-box");
+	msg.innerHTML = "";
+	let msgDiv = document.getElementById("message-div");
+	msgDiv.style.display = "none";
 }
 function tryGetLastActivityByCustomerId(customerId) {
 
@@ -38,7 +64,7 @@ function handleGetLastActivity(response) {
 	page.lastActivity = response.Data;
 	page.currentDebt = page.lastActivity.CurrentDebt;
 	let currentDeptValue = document.getElementById("current-dept-value");
-	currentDeptValue.innerHTML = page.lastActivity.CurrentDebt;
+	currentDeptValue.innerHTML = page.lastActivity.CurrentDebt+" $";
 	openPurchaseModal();
 	openPaymentModal();
 	openReturnModal();
@@ -115,8 +141,8 @@ function tryInsertPurchase() {
 	}
 	let paymentAmount = parseFloat(PaymentAmountString);
 	let userId = page.onlineUser.Id;
-	page.currentDebt = page.currentDebt + (productAmount - paymentAmount);
-	let newDebtValue = page.currentDebt;
+	
+	
 	if (description == "" ||
 		description == " ") {
 		let message = "Description is required !";
@@ -139,11 +165,13 @@ function tryInsertPurchase() {
 		Amount: productAmount,
 		ActivityType: 0,
 		UserId: userId,
-		CurrentDebt: newDebtValue,
+		
 
 	};
 
 	httpRequest("api/Customer/CreateActivity/?paymentAmount=" + paymentAmount, "POST", data, handleInsertActivity, showError.bind(null, "System Error"));
+	var modal = document.getElementById("purchase-modal");
+	modal.style.display = "none";
 }
 /*function tryInsertPayment() {
 	let description = document.getElementById("payment-create-description").value;
@@ -186,16 +214,13 @@ function tryInsertPayment()
 	let paymentAmount = parseFloat(paymentAmountString);
 	let userId = page.onlineUser.Id;
 	if (paymentAmount > page.currentDebt) {
-		alert("Müşteriniz borcu " + page.currentDebt + "TL fakat bu borçtan yüksek bir ödeme kabul ettiniz !");
-		paymentAmount = page.currentDebt;
-		page.currentDebt = 0;
+
+		let msgDiv = document.getElementById("message-div");
+		msgDiv.style.display = "block";
+		let messageBox = document.getElementById("message-box");
+		messageBox.innerHTML = paymentAmount - page.currentDebt + " TL PARA ÜSTÜ ÖDEYİNİZ!";
 	}
-	else {
-		page.currentDebt = page.currentDebt - paymentAmount;
-    }
-	
-	let newDebtValue = page.currentDebt;
-	
+
 	if (description == "") {
 		let message = "Description is required !";
 		return showError(message);
@@ -216,26 +241,27 @@ function tryInsertPayment()
 		Amount: paymentAmount,
 		ActivityType: 1,
 		UserId: userId,
-		CurrentDebt: newDebtValue,
 
 	};
 
 	httpRequest("api/Customer/CreateActivity/?paymentAmount=" + paymentAmount, "POST", data, handleInsertActivity, showError.bind(null, "System Error"));
+	var modal = document.getElementById("payment-modal");
+	modal.style.display = "none";
 }
 function tryInsertReturn() {
 	let description = document.getElementById("return-create-description").value;
 	let paymentAmountString = document.getElementById("return-create-productamount").value.toString().replace(",", ".");
 	let paymentAmount = parseFloat(paymentAmountString);
 	let userId = page.onlineUser.Id;
-	if (page.currentDebt <= paymentAmount)
-	{
-		page.currentDebt = 0;
+	if (paymentAmount > page.currentDebt) {
+
+		let msgDiv = document.getElementById("message-div");
+		msgDiv.style.display = "block";
+		let messageBox = document.getElementById("message-box");
+		messageBox.innerHTML = paymentAmount - (paymentAmount- page.currentDebt) + " TL PARA IADESI YAPINIZ!";
 	}
-	else {
-		page.currentDebt = page.currentDebt - paymentAmount;
-    }
 	
-	let newDebtValue = page.currentDebt;
+
 
 	if (description == "") {
 		let message = "Description is required !";
@@ -257,11 +283,13 @@ function tryInsertReturn() {
 		Amount: paymentAmount,
 		ActivityType: 2,
 		UserId: userId,
-		CurrentDebt: newDebtValue,
+
 
 	};
 
 	httpRequest("api/Customer/CreateActivity/?paymentAmount=" + paymentAmount, "POST", data, handleInsertActivity, showError.bind(null, "System Error"));
+	var modal = document.getElementById("return-modal");
+	modal.style.display = "none";
 }
 function handleInsertActivity(response) {
 	if (!response.Success) {
@@ -269,13 +297,14 @@ function handleInsertActivity(response) {
 		return;
 	}
 
-	let activity = response.Data;
-	let activityType = activity.ActivityType;
-	appendActivity(activity, activityType);
+	page.currentActivities = response.Data;
+	for (let i = 0; i < page.currentActivities.length; i++) {
+		let activity = page.currentActivities[i];
+		let activityType = activity.ActivityType;
+		appendActivity(activity, activityType);		
+    }
 	tryGetLastActivityByCustomerId(page.customerId);
-	redirectToCustomerProfile(activity.CustomerId);
-	let deptDiv = document.getElementById("current-dept-value");
-	deptDiv.innerHTML = page.currentDebt;
+
 }
 function redirectToCustomerProfile(customerId) {
 	redirect("User/CustomerProfile/" + customerId);
@@ -320,7 +349,8 @@ function appendActivity(activity, activityType) {
 	let activityHtml = toDom(activityHtmlString);
 
 	let activityListDiv = document.getElementById("activity-list");
-	activityListDiv.appendChild(activityHtml);
+	//activityListDiv.appendChild(activityHtml);
+	activityListDiv.insertBefore(activityHtml, activityListDiv.childNodes[0]);
 
 }
 function openPurchaseModal() {

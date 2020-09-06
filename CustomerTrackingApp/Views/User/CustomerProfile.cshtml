@@ -1,16 +1,24 @@
 ﻿@model CustomerViewModel
 <script type="text/javascript" src="~/scripts/User/CustomerProfile.js"></script>
 <link rel="stylesheet" href="~/styles/main.css" />
-<link rel="stylesheet" href="~/styles/profile.css" />
+<link rel="stylesheet" href="~/styles/mainprofile.css" />
 <link rel="stylesheet" href="~/styles/customerprofile.css" />
-<link rel="stylesheet" href="~/styles/users.css" />
+<link rel="stylesheet" href="~/styles/modal.css" />
 <link rel="stylesheet" href="~/styles/details.css" />
 <div class="page-container clearfix">
-    <div class="profile-header">
-        <div class="username">@Model.FullName</div>
-        <div class="phone">@Model.Phone</div>
-        <div class="user-type">Client</div>
-        <div class="phone" id="current-dept-value"></div>
+    <div class="message-box" id="message-div">
+        <span id="message-box"></span>
+        <button id="message-box-btn" class="btn btn-inline">DONE !</button>
+    </div>
+    <div class="current-debt-value">
+        <span>Current Debt: </span>
+        <span id="current-dept-value"></span>
+    </div>
+    <div class="profile-header clearfix">
+        <div class="customer-img"><img id="customer-img" src=""></div>
+        <strong class="username">@Model.FullName</strong>
+        <span class="phone">Phone: @Model.Phone</span>
+        <span class="user-type">Type: Client</span>
         <input id="customer-id-input" type="hidden" value="@Model.Id" />
     </div>
     <div id="purchase-modal" class="modal">
